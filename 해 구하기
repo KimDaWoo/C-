@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <math.h>
+
+double eqn(double a, double b, double c); //원형 함수를 정의
+int cnt = 0; //전역 변수 cnt, doit을 0으로 초기화
+int doit = 0;
+
+int main(void)
+{
+	double num1, num2;
+	double two, one, constant;
+	printf("일차 방정식의 계수를 입력: \n"); //2차항 계수, 1차항 계수, 상수항 값을 입력받는다.
+	printf("2차항 계수: ");
+	scanf_s("%lf", &two);
+	printf("1차항 계수: ");
+	scanf_s("%lf", &one);
+	printf("상수항 계수: ");
+	scanf_s("%lf", &constant);
+
+		num1 = eqn(two, one, constant);
+		cnt++; //입력한 함수가 서로 다른 두 근을 가지는 경우라면, 서로 다른 두근을 반환해야 하는데 함수 한번의 실행에서 두 값의 반환은 불가능하므로 서로 다른 두 상황을 만들어서 그 상황에 맞는 값을 반환하기 위해 사용함.
+
+		num2 = eqn(two, one, constant); //cnt++을 했기 때문에 num1과는 다른 값이 반환되어 저장될 것임.
+
+		if (doit == 1) //doit이 1이 되었다면 판별식이 0보다 작은 것이기 때문에 근을 출력하지 않고 프로그램 종료한다.
+		{
+			return 0;
+		}
+		else //doit이 1이 아닌 0이라면 판별식이 0보다 큰 경우이기 때문에 근을 출력한다.
+		{
+			if (num1 == num2) //두 근이 같은 경우
+			{
+				printf("이 함수는 하나의 근을 가집니다. 근: %.2lf", num1); //하나의 근을 출력한다.
+			}
+			else // 두 근이 다른 경우
+			{
+				printf("첫 번째 근: %.2lf\n", num1); //서로 다른 두 근을 출력한다.
+				printf("두 번째 근: %.2lf", num2);
+			}
+		}
+}
+
+double eqn(double a, double b, double c) //함수 eqn를 정의한다.
+{
+	double x1, x2;
+	double check = pow(b, 2) - 4 * a * c; //판별식을 정의
+
+	x1 = ((-b + sqrt(check)) / (2 * a));
+	x2 = ((-b - sqrt(check)) / (2 * a));
+
+	if (check < 0) //판별식이 0보다 작은 경우
+	{
+		if (doit == 0) //조건문 없이 들여쓰기 된 코드를 쓰게 되면 doit은 2가 되고 "근이 없습니다."라는 문장은 2번 출력된다. 보기 이상하기 때문에 이 조건문을 사용한다.
+		{
+			printf("근이 없습니다.\n");
+			doit++; //doit을 1로 만든다. main함수의 실행 중에 doit이 1이 되면 프로그램을 바로 종료하도록 만들었다.
+		}
+
+	}
+	else //판별식이 0 이상인 경우
+	{
+		if (cnt == 0) //cnt가 0인 경우
+		{
+			return x1; //x1 값을 반환
+		}
+		else //main 함수에서 cnt++을 해서 cnt 값이 1인 경우
+		{
+			return x2; //x2 값을 반환
+		}
+	}
+}
